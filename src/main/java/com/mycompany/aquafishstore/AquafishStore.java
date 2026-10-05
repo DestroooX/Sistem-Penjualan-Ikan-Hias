@@ -3,8 +3,10 @@ package com.mycompany.aquafishstore;
 import java.util.Scanner;
 
 public class AquafishStore {
+
     public static void cariIkan(Ikan[] daftarIkan, String nama) {
         boolean ditemukan = false;
+
         for (Ikan ikan : daftarIkan) {
             if (ikan != null &&
                 ikan.getNama().equalsIgnoreCase(nama)) {
@@ -22,6 +24,7 @@ public class AquafishStore {
 
     public static void cariIkan(Ikan[] daftarIkan, double harga) {
         boolean ditemukan = false;
+
         for (Ikan ikan : daftarIkan) {
             if (ikan != null &&
                 ikan.getHarga() <= harga) {
@@ -37,22 +40,56 @@ public class AquafishStore {
         }
     }
 
+    public static void prosesIkan(Ikan ikan) {
+        if (ikan != null) {
+            System.out.println("\n--- PROSES IKAN ---");
+            ikan.tampilkanInfo();
+            System.out.println("Proses dilakukan berdasarkan jenis ikan.");
+            ikan.beli(1);
+        } else {
+            System.out.println("Data ikan tidak tersedia.");
+        }
+    }
+
+    public static void tampilkanSemuaIkan(Ikan[] daftarIkan, int jumlahIkan) {
+        System.out.println("\n========================================");
+        System.out.println("          DAFTAR IKAN HIAS");
+        System.out.println("========================================");
+
+        if (jumlahIkan == 0) {
+            System.out.println("Belum ada data ikan.");
+        } else {
+            for (int i = 0; i < jumlahIkan; i++) {
+                System.out.println("\nData ikan ke-" + (i + 1));
+
+                Ikan ikan = daftarIkan[i];
+
+                ikan.tampilkanInfo();
+            }
+        }
+    }
+
     public static void main(String[] args) {
+
         Scanner input = new Scanner(System.in);
+
         Ikan[] daftarIkan = new Ikan[50];
+
         int jumlahIkan = 0;
         int pilihan;
+
         do {
             System.out.println("\n========================================");
-            System.out.println("     AQUAFISH STORE");
-            System.out.println("     TOKO IKAN HIAS");
+            System.out.println("          AQUAFISH STORE");
+            System.out.println("          TOKO IKAN HIAS");
             System.out.println("========================================");
             System.out.println("1. Tambah Data Ikan");
             System.out.println("2. Tampilkan Seluruh Data");
             System.out.println("3. Cari Ikan");
             System.out.println("4. Lihat Total Ikan");
             System.out.println("5. Beli Ikan");
-            System.out.println("6. Keluar");
+            System.out.println("6. Simulasi Polymorphism");
+            System.out.println("7. Keluar");
             System.out.println("========================================");
             System.out.print("Pilih menu: ");
 
@@ -60,20 +97,25 @@ public class AquafishStore {
             input.nextLine();
 
             switch (pilihan) {
+
                 case 1:
 
                     if (jumlahIkan >= daftarIkan.length) {
                         System.out.println("Data ikan sudah penuh.");
                         break;
                     }
-                    
+
                     System.out.println("\n--- TAMBAH DATA IKAN ---");
+
                     System.out.print("Nama ikan: ");
                     String nama = input.nextLine();
+
                     System.out.print("Harga ikan: ");
                     double harga = input.nextDouble();
+
                     System.out.print("Ukuran ikan (cm): ");
                     double ukuran = input.nextDouble();
+
                     System.out.print("Stok ikan: ");
                     int stok = input.nextInt();
 
@@ -82,16 +124,21 @@ public class AquafishStore {
                     System.out.println("\nJenis ikan:");
                     System.out.println("1. Air Tawar");
                     System.out.println("2. Air Laut");
+                    System.out.println("3. Air Payau");
                     System.out.print("Pilih jenis: ");
 
                     int jenis = input.nextInt();
                     input.nextLine();
 
                     if (harga <= 0 || ukuran <= 0 || stok < 0) {
+
                         System.out.println(
                                 "Data tidak valid. Periksa harga, ukuran, dan stok.");
+
                     } else {
+
                         if (jenis == 1) {
+
                             daftarIkan[jumlahIkan] =
                                     new IkanAirTawar(
                                             nama,
@@ -107,6 +154,7 @@ public class AquafishStore {
                                     "Data ikan air tawar berhasil ditambahkan.");
 
                         } else if (jenis == 2) {
+
                             daftarIkan[jumlahIkan] =
                                     new IkanAirLaut(
                                             nama,
@@ -121,7 +169,24 @@ public class AquafishStore {
                             System.out.println(
                                     "Data ikan air laut berhasil ditambahkan.");
 
+                        } else if (jenis == 3) {
+
+                            daftarIkan[jumlahIkan] =
+                                    new IkanAirPayau(
+                                            nama,
+                                            harga,
+                                            ukuran,
+                                            stok,
+                                            "Air Payau"
+                                    );
+
+                            jumlahIkan++;
+
+                            System.out.println(
+                                    "Data ikan air payau berhasil ditambahkan.");
+
                         } else {
+
                             System.out.println(
                                     "Jenis ikan tidak valid.");
                         }
@@ -131,19 +196,7 @@ public class AquafishStore {
 
                 case 2:
 
-                    System.out.println("\n========================================");
-                    System.out.println("          DAFTAR IKAN HIAS");
-                    System.out.println("========================================");
-
-                    if (jumlahIkan == 0) {
-                        System.out.println("Belum ada data ikan.");
-                    } else {
-
-                        for (int i = 0; i < jumlahIkan; i++) {
-                            System.out.println("\nData ikan ke-" + (i + 1));
-                            daftarIkan[i].tampilkanInfo();
-                        }
-                    }
+                    tampilkanSemuaIkan(daftarIkan, jumlahIkan);
 
                     break;
 
@@ -158,16 +211,21 @@ public class AquafishStore {
                     input.nextLine();
 
                     if (cari == 1) {
+
                         System.out.print("Masukkan nama ikan: ");
                         String cariNama = input.nextLine();
+
                         cariIkan(daftarIkan, cariNama);
 
                     } else if (cari == 2) {
+
                         System.out.print("Masukkan harga maksimal: ");
                         double cariHarga = input.nextDouble();
+
                         cariIkan(daftarIkan, cariHarga);
 
                     } else {
+
                         System.out.println("Pilihan tidak valid.");
                     }
 
@@ -185,17 +243,28 @@ public class AquafishStore {
                 case 5:
 
                     System.out.println("\n--- PEMBELIAN IKAN ---");
+
+                    if (jumlahIkan == 0) {
+                        System.out.println("Belum ada data ikan.");
+                        break;
+                    }
+
                     System.out.print("Masukkan nama ikan: ");
                     String namaBeli = input.nextLine();
+
                     boolean ditemukan = false;
 
                     for (int i = 0; i < jumlahIkan; i++) {
+
                         if (daftarIkan[i].getNama()
                                 .equalsIgnoreCase(namaBeli)) {
+
                             ditemukan = true;
+
                             System.out.print("Jumlah yang dibeli: ");
                             int jumlahBeli = input.nextInt();
                             input.nextLine();
+
                             daftarIkan[i].beli(jumlahBeli);
 
                             break;
@@ -203,13 +272,53 @@ public class AquafishStore {
                     }
 
                     if (!ditemukan) {
-                        System.out.println(
-                                "Ikan tidak ditemukan.");
+                        System.out.println("Ikan tidak ditemukan.");
                     }
 
                     break;
 
                 case 6:
+
+                    System.out.println("\n--- SIMULASI POLYMORPHISM ---");
+
+                    if (jumlahIkan == 0) {
+                        System.out.println("Belum ada data ikan.");
+                        break;
+                    }
+
+                    System.out.println(
+                            "Method menerima parameter bertipe Ikan.");
+                    System.out.println(
+                            "Objek subclass akan menjalankan method yang sesuai.");
+
+                    System.out.println("\nDaftar ikan:");
+
+                    for (int i = 0; i < jumlahIkan; i++) {
+                        System.out.println(
+                                (i + 1) + ". "
+                                + daftarIkan[i].getNama());
+                    }
+
+                    System.out.print("Pilih ikan: ");
+                    int pilihIkan = input.nextInt();
+                    input.nextLine();
+
+                    if (pilihIkan >= 1 && pilihIkan <= jumlahIkan) {
+
+                        Ikan ikanDipilih =
+                                daftarIkan[pilihIkan - 1];
+
+                        prosesIkan(ikanDipilih);
+
+                    } else {
+
+                        System.out.println(
+                                "Pilihan ikan tidak valid.");
+                    }
+
+                    break;
+
+                case 7:
 
                     System.out.println("\n================================");
                     System.out.println("Terima kasih telah menggunakan");
@@ -224,7 +333,7 @@ public class AquafishStore {
                             "Pilihan menu tidak tersedia.");
             }
 
-        } while (pilihan != 6);
+        } while (pilihan != 7);
 
         input.close();
     }

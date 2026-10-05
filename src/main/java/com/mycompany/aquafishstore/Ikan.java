@@ -1,5 +1,6 @@
 package com.mycompany.aquafishstore;
-public class Ikan{
+
+public class Ikan {
     private String nama;
     private double harga;
     private double ukuran;
@@ -69,6 +70,7 @@ public class Ikan{
     public void beli(int jumlah) {
         if (jumlah > 0 && jumlah <= stok) {
             stok -= jumlah;
+
             System.out.println("Pembelian berhasil!");
             System.out.println("Jumlah dibeli : " + jumlah);
             System.out.println("Total harga   : Rp" + (harga * jumlah));

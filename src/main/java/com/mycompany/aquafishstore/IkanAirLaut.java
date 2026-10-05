@@ -1,6 +1,8 @@
 package com.mycompany.aquafishstore;
+
 public class IkanAirLaut extends Ikan {
     private String jenisAir;
+
     public IkanAirLaut(String nama, double harga, double ukuran,
                        int stok, String jenisAir) {
         super(nama, harga, ukuran, stok);
@@ -24,5 +26,11 @@ public class IkanAirLaut extends Ikan {
         System.out.println("--------------------------------");
         super.tampilkanInfo();
         System.out.println("Jenis Air  : " + jenisAir);
+    }
+
+    @Override
+    public void beli(int jumlah) {
+        System.out.println("Proses pembelian ikan air laut.");
+        super.beli(jumlah);
     }
 }
