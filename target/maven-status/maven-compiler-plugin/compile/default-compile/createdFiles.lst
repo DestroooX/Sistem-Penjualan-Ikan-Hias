@@ -1,4 +1,5 @@
 com\mycompany\aquafishstore\AquafishStore.class
 com\mycompany\aquafishstore\Ikan.class
 com\mycompany\aquafishstore\IkanAirLaut.class
+com\mycompany\aquafishstore\IkanAirPayau.class
 com\mycompany\aquafishstore\IkanAirTawar.class
