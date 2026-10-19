@@ -1,6 +1,6 @@
 package com.mycompany.aquafishstore;
 
-public class IkanAirTawar extends Ikan {
+public class IkanAirTawar extends Ikan implements DapatDibeli, DapatDirawat {
     private String jenisAir;
 
     public IkanAirTawar(String nama, double harga, double ukuran,
@@ -22,15 +22,30 @@ public class IkanAirTawar extends Ikan {
     @Override
     public void tampilkanInfo() {
         System.out.println("--------------------------------");
-        System.out.println("       IKAN AIR TAWAR");
+        System.out.println("        IKAN AIR TAWAR");
         System.out.println("--------------------------------");
         super.tampilkanInfo();
         System.out.println("Jenis Air  : " + jenisAir);
     }
 
     @Override
+    public void tampilkanHabitatIdeal() {
+        System.out.println("Habitat ideal: Air tawar bersih dengan suhu stabil.");
+    }
+
+    @Override
     public void beli(int jumlah) {
         System.out.println("Proses pembelian ikan air tawar.");
         super.beli(jumlah);
+    }
+
+    @Override
+    public void prosesPembelian(int jumlah) {
+        beli(jumlah);
+    }
+
+    @Override
+    public void tampilkanTipsPerawatan() {
+        System.out.println("Tips: Jaga kebersihan akuarium dan beri pakan sesuai kebutuhan.");
     }
 }

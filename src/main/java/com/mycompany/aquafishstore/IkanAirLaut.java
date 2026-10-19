@@ -1,6 +1,6 @@
 package com.mycompany.aquafishstore;
 
-public class IkanAirLaut extends Ikan {
+public class IkanAirLaut extends Ikan implements DapatDibeli {
     private String jenisAir;
 
     public IkanAirLaut(String nama, double harga, double ukuran,
@@ -29,8 +29,18 @@ public class IkanAirLaut extends Ikan {
     }
 
     @Override
+    public void tampilkanHabitatIdeal() {
+        System.out.println("Habitat ideal: Air laut dengan kadar garam dan kualitas air terjaga.");
+    }
+
+    @Override
     public void beli(int jumlah) {
         System.out.println("Proses pembelian ikan air laut.");
         super.beli(jumlah);
+    }
+
+    @Override
+    public void prosesPembelian(int jumlah) {
+        beli(jumlah);
     }
 }

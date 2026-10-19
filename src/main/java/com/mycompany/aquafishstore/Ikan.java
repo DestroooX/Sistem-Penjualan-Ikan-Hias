@@ -1,6 +1,6 @@
 package com.mycompany.aquafishstore;
 
-public class Ikan {
+public abstract class Ikan {
     private String nama;
     private double harga;
     private double ukuran;
@@ -67,16 +67,17 @@ public class Ikan {
         System.out.println("Stok       : " + stok);
     }
 
+    public abstract void tampilkanHabitatIdeal();
+
     public void beli(int jumlah) {
         if (jumlah > 0 && jumlah <= stok) {
             stok -= jumlah;
-
             System.out.println("Pembelian berhasil!");
             System.out.println("Jumlah dibeli : " + jumlah);
             System.out.println("Total harga   : Rp" + (harga * jumlah));
             System.out.println("Sisa stok     : " + stok);
         } else {
-            System.out.println("Jumlah pembelian tidak valid.");
+            System.out.println("Jumlah pembelian tidak valid atau stok tidak cukup.");
         }
     }
 }

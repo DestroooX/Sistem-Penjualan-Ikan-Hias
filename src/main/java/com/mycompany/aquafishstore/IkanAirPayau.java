@@ -1,6 +1,6 @@
 package com.mycompany.aquafishstore;
 
-public class IkanAirPayau extends Ikan {
+public class IkanAirPayau extends Ikan implements DapatDirawat {
     private String jenisAir;
 
     public IkanAirPayau(String nama, double harga, double ukuran,
@@ -29,8 +29,18 @@ public class IkanAirPayau extends Ikan {
     }
 
     @Override
+    public void tampilkanHabitatIdeal() {
+        System.out.println("Habitat ideal: Air payau dengan salinitas yang sesuai.");
+    }
+
+    @Override
     public void beli(int jumlah) {
         System.out.println("Proses pembelian ikan air payau.");
         super.beli(jumlah);
+    }
+
+    @Override
+    public void tampilkanTipsPerawatan() {
+        System.out.println("Tips: Pantau salinitas air dan lakukan penggantian air secara teratur.");
     }
 }
