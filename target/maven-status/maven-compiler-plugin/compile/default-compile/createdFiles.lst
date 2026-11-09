@@ -4,4 +4,9 @@ com\mycompany\aquafishstore\IkanAirLaut.class
 com\mycompany\aquafishstore\IkanAirPayau.class
 com\mycompany\aquafishstore\IkanAirTawar.class
 com\mycompany\aquafishstore\Ikan.class
+com\mycompany\aquafishstore\TransaksiPembelian.class
+com\mycompany\aquafishstore\Pelanggan.class
 com\mycompany\aquafishstore\DapatDibeli.class
+com\mycompany\aquafishstore\IkanTidakDitemukanException.class
+com\mycompany\aquafishstore\TokoIkan.class
+com\mycompany\aquafishstore\Akuarium.class
