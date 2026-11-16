@@ -1,12 +1,15 @@
 package com.mycompany.aquafishstore;
 
-public class Akuarium {
+import java.io.Serializable;
+
+public class Akuarium implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String namaAkuarium;
     private double kapasitas;
     private String jenisAir;
 
-    public Akuarium(String namaAkuarium, double kapasitas,
-                    String jenisAir) {
+    public Akuarium(String namaAkuarium, double kapasitas, String jenisAir) {
         this.namaAkuarium = namaAkuarium;
         this.kapasitas = kapasitas;
         this.jenisAir = jenisAir;

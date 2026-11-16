@@ -1,6 +1,10 @@
 package com.mycompany.aquafishstore;
 
-public abstract class Ikan {
+import java.io.Serializable;
+
+public abstract class Ikan implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String nama;
     private double harga;
     private double ukuran;
@@ -58,6 +62,10 @@ public abstract class Ikan {
 
     public static int getTotalIkan() {
         return totalIkan;
+    }
+
+    public static void setTotalIkan(int total) {
+        totalIkan = total;
     }
 
     public void tampilkanInfo() {

@@ -2,8 +2,8 @@ package com.mycompany.aquafishstore;
 
 public class TransaksiPembelian {
 
-    public void prosesTransaksi(Pelanggan pelanggan,
-                                Ikan ikan, int jumlah) {
+    public void prosesTransaksi(Pelanggan pelanggan, Ikan ikan,
+                                int jumlah, TokoIkan toko) {
 
         if (pelanggan == null) {
             System.out.println("Data pelanggan tidak tersedia.");
@@ -40,6 +40,15 @@ public class TransaksiPembelian {
             System.out.printf("Total Harga    : Rp%.0f%n", totalHarga);
 
             System.out.println("Transaksi berhasil diproses.");
+
+            String catatan = "Pembelian oleh "
+                    + pelanggan.getNamaPelanggan()
+                    + " | Ikan: " + ikan.getNama()
+                    + " | Jumlah: " + jumlah
+                    + " | Total: Rp" + String.format("%.0f", totalHarga);
+
+            toko.catatLogTransaksi(catatan);
+
         } else {
             System.out.println(
                     "Jumlah pembelian tidak valid atau stok tidak cukup.");

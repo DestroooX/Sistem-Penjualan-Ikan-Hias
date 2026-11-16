@@ -1,11 +1,10 @@
 package com.mycompany.aquafishstore;
 
-import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class AquafishStore {
 
-    // Method untuk menjalankan abstract method
     public static void prosesIkan(Ikan ikan) {
         if (ikan != null) {
             System.out.println("\n--- SIMULASI ABSTRACT METHOD ---");
@@ -16,7 +15,6 @@ public class AquafishStore {
         }
     }
 
-    // Method untuk menguji interface menggunakan instanceof
     public static void jalankanFiturInterface(Ikan ikan) {
         if (ikan == null) {
             System.out.println("Data ikan tidak tersedia.");
@@ -28,20 +26,17 @@ public class AquafishStore {
 
         if (ikan instanceof DapatDibeli) {
             DapatDibeli dapatDibeli = (DapatDibeli) ikan;
-
             System.out.println("\nObjek ini mendukung fitur pembelian.");
             dapatDibeli.prosesPembelian(1);
         }
 
         if (ikan instanceof DapatDirawat) {
             DapatDirawat dapatDirawat = (DapatDirawat) ikan;
-
             System.out.println("\nObjek ini memiliki tips perawatan.");
             dapatDirawat.tampilkanTipsPerawatan();
         }
     }
 
-    // Method untuk memilih ikan
     public static Ikan pilihIkan(TokoIkan toko, Scanner input) {
         if (toko.isDaftarIkanKosong()) {
             System.out.println("Belum ada data ikan.");
@@ -74,8 +69,9 @@ public class AquafishStore {
         Scanner input = new Scanner(System.in);
 
         TokoIkan toko = new TokoIkan();
-
         TransaksiPembelian transaksi = new TransaksiPembelian();
+
+        toko.muatDataDariFile();
 
         int pilihan = 0;
 
@@ -95,7 +91,10 @@ public class AquafishStore {
             System.out.println("9. Tampilkan Seluruh Pelanggan");
             System.out.println("10. Informasi Akuarium (Composition)");
             System.out.println("11. Transaksi Pembelian (Association)");
-            System.out.println("12. Keluar");
+            System.out.println("12. Simpan Data ke File");
+            System.out.println("13. Muat Data dari File");
+            System.out.println("14. Tampilkan Log Transaksi");
+            System.out.println("15. Keluar");
             System.out.println("========================================");
             System.out.print("Pilih menu: ");
 
@@ -153,6 +152,7 @@ public class AquafishStore {
                         } else {
                             System.out.println("Jenis ikan tidak valid.");
                         }
+
                         break;
 
                     case 2:
@@ -175,6 +175,7 @@ public class AquafishStore {
 
                         try {
                             if (cari == 1) {
+
                                 System.out.print("Masukkan nama ikan: ");
                                 String namaCari = input.nextLine();
 
@@ -184,6 +185,7 @@ public class AquafishStore {
                                 hasil.tampilkanInfo();
 
                             } else if (cari == 2) {
+
                                 System.out.print("Masukkan harga maksimal: ");
                                 double hargaMaksimal = input.nextDouble();
                                 input.nextLine();
@@ -197,34 +199,36 @@ public class AquafishStore {
                         } catch (IkanTidakDitemukanException e) {
                             System.out.println("Error: " + e.getMessage());
                         }
+
                         break;
 
                     case 4:
                         System.out.println("\n--- TOTAL DATA IKAN ---");
+
                         System.out.println("Total object ikan yang dibuat: "
                                 + Ikan.getTotalIkan());
+
                         System.out.println("Jumlah ikan di toko saat ini: "
                                 + toko.getJumlahIkan());
+
                         break;
 
                     case 5:
-                        System.out.println("\n--- SIMULASI ABSTRACT METHOD ---");
-
                         Ikan ikanHabitat = pilihIkan(toko, input);
 
                         if (ikanHabitat != null) {
                             prosesIkan(ikanHabitat);
                         }
+
                         break;
 
                     case 6:
-                        System.out.println("\n--- UJI FITUR INTERFACE ---");
-
                         Ikan ikanInterface = pilihIkan(toko, input);
 
                         if (ikanInterface != null) {
                             jalankanFiturInterface(ikanInterface);
                         }
+
                         break;
 
                     case 7:
@@ -244,8 +248,7 @@ public class AquafishStore {
 
                         } else if (toko.cariPelanggan(id) != null) {
 
-                            System.out.println(
-                                    "ID pelanggan sudah digunakan.");
+                            System.out.println("ID pelanggan sudah digunakan.");
 
                         } else {
 
@@ -254,6 +257,7 @@ public class AquafishStore {
 
                             toko.tambahPelanggan(pelanggan);
                         }
+
                         break;
 
                     case 8:
@@ -266,12 +270,16 @@ public class AquafishStore {
                                 toko.cariPelanggan(idCari);
 
                         if (hasilPelanggan != null) {
+
                             System.out.println("\nData pelanggan ditemukan.");
                             hasilPelanggan.tampilkanInfoPelanggan();
+
                         } else {
+
                             System.out.println(
                                     "Pelanggan dengan ID tersebut tidak ditemukan.");
                         }
+
                         break;
 
                     case 9:
@@ -319,13 +327,28 @@ public class AquafishStore {
                         input.nextLine();
 
                         transaksi.prosesTransaksi(
-                                pembeli, ikanTransaksi, jumlahBeli);
+                                pembeli, ikanTransaksi, jumlahBeli, toko);
 
                         break;
 
                     case 12:
+                        toko.simpanDataKeFile();
+                        break;
+
+                    case 13:
+                        toko.muatDataDariFile();
+                        break;
+
+                    case 14:
+                        toko.bacaLogTransaksi();
+                        break;
+
+                    case 15:
+                        toko.simpanDataKeFile();
+
                         System.out.println(
                                 "\nTerima kasih telah menggunakan AquaFish Store!");
+
                         break;
 
                     default:
@@ -333,14 +356,16 @@ public class AquafishStore {
                 }
 
             } catch (InputMismatchException e) {
+
                 System.out.println("\nTerjadi kesalahan input!");
+
                 System.out.println(
                         "Error: Masukkan angka sesuai jenis input.");
-                input.nextLine();
 
+                input.nextLine();
             }
 
-        } while (pilihan != 12);
+        } while (pilihan != 15);
 
         input.close();
     }

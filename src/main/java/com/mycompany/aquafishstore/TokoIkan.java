@@ -1,9 +1,24 @@
 package com.mycompany.aquafishstore;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
-public class TokoIkan {
+public class TokoIkan implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private static final String FILE_DATA = "data_aquafish.dat";
+    private static final String FILE_LOG = "log_transaksi.txt";
 
     private ArrayList<Ikan> daftarIkan;
     private HashMap<String, Pelanggan> daftarPelanggan;
@@ -12,7 +27,6 @@ public class TokoIkan {
     public TokoIkan() {
         daftarIkan = new ArrayList<>();
         daftarPelanggan = new HashMap<>();
-
         akuarium = new Akuarium(
                 "Akuarium AquaFish Store", 200, "Air Tawar dan Laut");
     }
@@ -39,12 +53,9 @@ public class TokoIkan {
         }
     }
 
-    public Ikan cariIkan(String nama)
-            throws IkanTidakDitemukanException {
-
+    public Ikan cariIkan(String nama) throws IkanTidakDitemukanException {
         if (nama == null || nama.trim().isEmpty()) {
-            throw new IkanTidakDitemukanException(
-                    "Nama ikan tidak boleh kosong.");
+            throw new IkanTidakDitemukanException("Nama ikan tidak boleh kosong.");
         }
 
         for (Ikan ikan : daftarIkan) {
@@ -57,9 +68,7 @@ public class TokoIkan {
                 "Ikan dengan nama tersebut tidak ditemukan.");
     }
 
-    public void cariIkan(double harga)
-            throws IkanTidakDitemukanException {
-
+    public void cariIkan(double harga) throws IkanTidakDitemukanException {
         if (harga <= 0) {
             throw new IkanTidakDitemukanException(
                     "Harga maksimal harus lebih dari 0.");
@@ -135,5 +144,90 @@ public class TokoIkan {
 
     public void lihatAkuarium() {
         akuarium.tampilkanInfoAkuarium();
+    }
+
+    public void simpanDataKeFile() {
+        try (ObjectOutputStream output = new ObjectOutputStream(
+                new FileOutputStream(FILE_DATA))) {
+
+            output.writeObject(this);
+            System.out.println("Data berhasil disimpan ke " + FILE_DATA);
+
+        } catch (IOException e) {
+            System.out.println("Gagal menyimpan data: " + e.getMessage());
+        }
+    }
+
+    public void muatDataDariFile() {
+        File file = new File(FILE_DATA);
+
+        if (!file.exists()) {
+            System.out.println(
+                    "File data belum tersedia. Toko dimulai dengan data kosong.");
+            return;
+        }
+
+        try (ObjectInputStream input = new ObjectInputStream(
+                new FileInputStream(file))) {
+
+            TokoIkan dataTersimpan = (TokoIkan) input.readObject();
+
+            this.daftarIkan = dataTersimpan.daftarIkan;
+            this.daftarPelanggan = dataTersimpan.daftarPelanggan;
+            this.akuarium = dataTersimpan.akuarium;
+
+            Ikan.setTotalIkan(daftarIkan.size());
+
+            System.out.println("Data berhasil dimuat dari " + FILE_DATA);
+
+        } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            System.out.println("Gagal memuat data: " + e.getMessage());
+        }
+    }
+
+    public void catatLogTransaksi(String keterangan) {
+        DateTimeFormatter format =
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        String waktu = LocalDateTime.now().format(format);
+
+        try (FileWriter writer = new FileWriter(FILE_LOG, true)) {
+
+            writer.write("[" + waktu + "] " + keterangan
+                    + System.lineSeparator());
+
+            System.out.println("Transaksi berhasil dicatat ke " + FILE_LOG);
+
+        } catch (IOException e) {
+            System.out.println("Gagal mencatat transaksi: " + e.getMessage());
+        }
+    }
+
+    public void bacaLogTransaksi() {
+        File file = new File(FILE_LOG);
+
+        System.out.println("\n========================================");
+        System.out.println("          LOG TRANSAKSI");
+        System.out.println("========================================");
+
+        if (!file.exists()) {
+            System.out.println("Belum ada log transaksi.");
+            return;
+        }
+
+        try (Scanner pembaca = new Scanner(file)) {
+
+            if (!pembaca.hasNextLine()) {
+                System.out.println("File log masih kosong.");
+                return;
+            }
+
+            while (pembaca.hasNextLine()) {
+                System.out.println(pembaca.nextLine());
+            }
+
+        } catch (IOException e) {
+            System.out.println("Gagal membaca log: " + e.getMessage());
+        }
     }
 }
